@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">LDS Quad</string>
+    <string name="top_name">TOP</string>
+    <string name="eng_trls">ENG</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="no_bookmark_msg">There are no bookmarks\n\nTap a verse number to add\nTap it again to remove</string>
+    <string name="search">Search</string>
+    <string name="no_results_msg">No results found\n\nOnly phrase match is supported\nFurigana cannot be searched</string>
+</resources>

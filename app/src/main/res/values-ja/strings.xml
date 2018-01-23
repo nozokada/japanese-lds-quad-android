@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">末日聖徒合本</string>
+    <string name="eng_trls">英訳</string>
+    <string name="top_name">一覧</string>
+    <string name="bookmarks">ブックマーク</string>
+    <string name="no_bookmark_msg">ブックマークはありません\n\n節の数字をタップして追加してください\nもう一度タップすると削除されます</string>
+    <string name="search">検索</string>
+    <string name="no_results_msg">検索結果はありません\n\nフレーズ一致のみ対応しています\n振り仮名の検索はできません</string>
+</resources>

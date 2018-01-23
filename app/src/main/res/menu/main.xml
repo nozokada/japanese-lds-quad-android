@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/home"
+        android:title="@string/top_name"
+        app:showAsAction="ifRoom"
+        android:icon="@mipmap/ic_home_white_24dp"
+        />
+
+    <item android:id="@+id/search"
+        android:title="@string/search"
+        app:showAsAction="ifRoom"
+        android:icon="@mipmap/ic_search_white_24dp"
+        />
+
+    <item android:id="@+id/bookmarks"
+        android:title="@string/bookmarks"
+        app:showAsAction="ifRoom"
+        android:icon="@mipmap/ic_book_white_24dp"
+        />
+
+    <item android:id="@+id/switchEng"
+        android:title=""
+        app:showAsAction="always"
+        app:actionLayout="@layout/switch_eng"
+        />
+</menu>
