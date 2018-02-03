@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -24,6 +25,7 @@ public class JLQApplication extends Application {
     private static final String TEMPORARY_REALM_FILENAME = "tmp.realm";
     private static final int CURRENT_SCHEMA_VERSION = 1;
     private static final String PROPERTY_ID = "UA-113517187-1";
+    HashMap<TrackerName, Tracker> trackers = new HashMap<>();
 
     @Override
     public void onCreate() {
@@ -50,24 +52,40 @@ public class JLQApplication extends Application {
                     .build();
             try {
                 Realm realmToCopy = Realm.getInstance(tmpConfig);
-                createNewRealmFromBundleRealmFile(defaultRealmParentPath);
+                configureBundleOrExistingRealmFile(defaultRealmParentPath, true);
                 copyUserDataToDefaultRealm(realmToCopy);
             } catch (RealmFileException e) {
-                GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-                Tracker tracker = analytics.newTracker(PROPERTY_ID);
-                tracker.send(new HitBuilders.ExceptionBuilder()
-                        .setDescription(new StandardExceptionParser(this, null)
-                                .getDescription(Thread.currentThread().getName(), e))
-                        .setFatal(false)
-                        .build()
-                );
-                createNewRealmFromBundleRealmFile(defaultRealmParentPath);
+                sendAnalytics(e);
+                configureBundleOrExistingRealmFile(defaultRealmParentPath, false);
             }
             removeTemporaryRealmFile(tmpRealmPath);
         }
         else {
-            createNewRealmFromBundleRealmFile(defaultRealmParentPath);
+            configureBundleOrExistingRealmFile(defaultRealmParentPath, true);
         }
+    }
+
+    public enum TrackerName {
+        APP_TRACKER
+    }
+
+    synchronized Tracker getTracker(TrackerName trackerId) {
+        if (!trackers.containsKey(trackerId)) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            Tracker tracker = analytics.newTracker(PROPERTY_ID);
+            trackers.put(trackerId, tracker);
+        }
+        return trackers.get(trackerId);
+    }
+
+    private void sendAnalytics(Exception e) {
+        Tracker tracker = getTracker(TrackerName.APP_TRACKER);
+        tracker.send(new HitBuilders.ExceptionBuilder()
+                .setDescription(new StandardExceptionParser(this, null)
+                        .getDescription(Thread.currentThread().getName(), e))
+                .setFatal(false)
+                .build()
+        );
     }
 
     private void createTemporaryRealmFile(File defaultRealmFile, String defaultRealmParentPath) {
@@ -93,8 +111,10 @@ public class JLQApplication extends Application {
         realmToCopy.close();
     }
 
-    private void createNewRealmFromBundleRealmFile(String defaultRealmParentPath) {
-        copyBundledRealmFile(getResources().openRawResource(R.raw.jlq), defaultRealmParentPath, DEFAULT_REALM_FILENAME);
+    private void configureBundleOrExistingRealmFile(String defaultRealmParentPath, boolean bundle) {
+        if(bundle) {
+            copyBundledRealmFile(getResources().openRawResource(R.raw.jlq), defaultRealmParentPath, DEFAULT_REALM_FILENAME);
+        }
         RealmConfiguration config = new RealmConfiguration.Builder().name(DEFAULT_REALM_FILENAME)
                 .schemaVersion(CURRENT_SCHEMA_VERSION)
                 .migration(new Migration())
