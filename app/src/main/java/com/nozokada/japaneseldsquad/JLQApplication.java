@@ -2,6 +2,11 @@ package com.nozokada.japaneseldsquad;
 
 import android.app.Application;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.StandardExceptionParser;
+import com.google.android.gms.analytics.Tracker;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,11 +17,13 @@ import java.io.InputStream;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
+import io.realm.exceptions.RealmFileException;
 
 public class JLQApplication extends Application {
-    String DEFAULT_REALM_FILENAME = "jlq.realm";
-    String TEMPORARY_REALM_FILENAME = "tmp.realm";
-    int CURRENT_SCHEMA_VERSION = 1;
+    private static final String DEFAULT_REALM_FILENAME = "jlq.realm";
+    private static final String TEMPORARY_REALM_FILENAME = "tmp.realm";
+    private static final int CURRENT_SCHEMA_VERSION = 1;
+    private static final String PROPERTY_ID = "UA-113517187-1";
 
     @Override
     public void onCreate() {
@@ -41,10 +48,21 @@ public class JLQApplication extends Application {
                     .schemaVersion(CURRENT_SCHEMA_VERSION)
                     .migration(new Migration())
                     .build();
-            Realm realmToCopy = Realm.getInstance(tmpConfig);
-
-            createNewRealmFromBundleRealmFile(defaultRealmParentPath);
-            copyUserDataToDefaultRealm(realmToCopy);
+            try {
+                Realm realmToCopy = Realm.getInstance(tmpConfig);
+                createNewRealmFromBundleRealmFile(defaultRealmParentPath);
+                copyUserDataToDefaultRealm(realmToCopy);
+            } catch (RealmFileException e) {
+                GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+                Tracker tracker = analytics.newTracker(PROPERTY_ID);
+                tracker.send(new HitBuilders.ExceptionBuilder()
+                        .setDescription(new StandardExceptionParser(this, null)
+                                .getDescription(Thread.currentThread().getName(), e))
+                        .setFatal(false)
+                        .build()
+                );
+                createNewRealmFromBundleRealmFile(defaultRealmParentPath);
+            }
             removeTemporaryRealmFile(tmpRealmPath);
         }
         else {
