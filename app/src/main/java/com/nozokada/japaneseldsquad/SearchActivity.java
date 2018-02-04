@@ -27,7 +27,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class SearchActivity extends AppCompatActivity implements OnQueryTextListener {
-    private final String PREFS_NAME = "JLQPrefsFile";
+    private static final String PREFS_NAME = "JLQPrefsFile";
 
     private Realm realm;
 
@@ -52,16 +52,16 @@ public class SearchActivity extends AppCompatActivity implements OnQueryTextList
         settings = getSharedPreferences(PREFS_NAME, 0);
         englishEnabled = settings.getBoolean("englishEnabled", false);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        listView = (ListView) findViewById(R.id.list);
+        listView = findViewById(R.id.list);
 
         realm = Realm.getDefaultInstance();
 
         getSupportActionBar().setTitle(getString(R.string.search));
 
-        textView = (TextView) findViewById(R.id.text);
+        textView = findViewById(R.id.text);
         textView.setText(getText(R.string.no_results_msg));
     }
 
@@ -168,8 +168,8 @@ public class SearchActivity extends AppCompatActivity implements OnQueryTextList
                 if (settings.getBoolean("englishEnabled", false)) {
                     StringBuilder enText = new StringBuilder();
 
-                    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-                    TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+                    TextView text1 = view.findViewById(android.R.id.text1);
+                    TextView text2 = view.findViewById(android.R.id.text2);
                     text2.setVisibility(View.VISIBLE);
 
                     if (hymnsCell) {
@@ -196,8 +196,8 @@ public class SearchActivity extends AppCompatActivity implements OnQueryTextList
                     text2.setText(enText);
                 }
                 else {
-                    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-                    TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+                    TextView text1 = view.findViewById(android.R.id.text1);
+                    TextView text2 = view.findViewById(android.R.id.text2);
                     text1.setText(jpText);
                     text2.setVisibility(View.GONE);
                 }

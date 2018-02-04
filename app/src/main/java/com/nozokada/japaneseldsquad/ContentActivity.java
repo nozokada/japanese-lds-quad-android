@@ -19,7 +19,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class ContentActivity extends AppCompatActivity {
-    private final String PREFS_NAME = "JLQPrefsFile";
+    private static final String PREFS_NAME = "JLQPrefsFile";
 
     private Realm realm;
 
@@ -55,7 +55,7 @@ public class ContentActivity extends AppCompatActivity {
         settings = getSharedPreferences(PREFS_NAME, 0);
         englishEnabled = settings.getBoolean("englishEnabled", false);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         realm = Realm.getDefaultInstance();
@@ -109,7 +109,7 @@ public class ContentActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(targetBookName + " " + counter);
         }
 
-        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager = findViewById(R.id.pager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -164,7 +164,7 @@ public class ContentActivity extends AppCompatActivity {
 
         englishEnabled = settings.getBoolean("englishEnabled", false);
 
-        englishSwitch = (SwitchCompat) item.getActionView().findViewById(R.id.switchForActionBar);
+        englishSwitch = item.getActionView().findViewById(R.id.switchForActionBar);
         englishSwitch.setChecked(englishEnabled);
 
         englishSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

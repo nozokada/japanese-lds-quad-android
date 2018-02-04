@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,11 +19,13 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class ContentWebView extends WebView {
-    private String baseAssetUrl = "file:///android_asset/";
-
-    private final int NORMAL = 100;
-    private final int LARGE = 150;
-    private final int XLARGE = 200;
+    private static final String BASE_ASSET_URL = "file:///android_asset/";
+    private static final String DEFAULT_FONT = "Hiragino Kaku Gothic ProN";
+    private static final String DEFAULT_FONT_COLOR = "rgb(0,0,0)";
+    private static final String DEFAULT_BACKGROUND_COLOR = "rgb(255,255,255)";
+    private static final int NORMAL = 100;
+    private static final int LARGE = 150;
+    private static final int XLARGE = 200;
 
     private FragmentActivity fragmentActivity;
     private ProgressBar spinner;
@@ -36,15 +37,11 @@ public class ContentWebView extends WebView {
     private int currentChapter;
     private String currentScriptureId;
 
-    private String defaultFont = "Hiragino Kaku Gothic ProN";
-    private String defaultFontColor = "rgb(0,0,0)";
-    private String defaultBackgroundColor = "rgb(255,255,255)";
-
     public ContentWebView(Context context, String bookId, int chapter, String scriptureId) {
         super(context);
 
         fragmentActivity = (FragmentActivity) context;
-        spinner = (ProgressBar) fragmentActivity.findViewById(R.id.spinner);
+        spinner = fragmentActivity.findViewById(R.id.spinner);
         detector = new GestureDetector(context, new ContentFragmentGestureDetector());
 
         currentBookId = bookId;
@@ -93,11 +90,11 @@ public class ContentWebView extends WebView {
     }
 
     private String getCSSHeader() {
-        String font = defaultFont;
+        String font = DEFAULT_FONT;
         double fontSize = 1.0;
         double paddingSize = fontSize;
-        String fontColor = defaultFontColor;
-        String backgroundColor = defaultBackgroundColor;
+        String fontColor = DEFAULT_FONT_COLOR;
+        String backgroundColor = DEFAULT_BACKGROUND_COLOR;
 
         String bookmarkImageFileName = "bookmark";
 
@@ -220,7 +217,7 @@ public class ContentWebView extends WebView {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-            url = url.replace(baseAssetUrl, "");
+            url = url.replace(BASE_ASSET_URL, "");
             String[] path = url.split("/");
             String eventId = path[path.length - 1];
 

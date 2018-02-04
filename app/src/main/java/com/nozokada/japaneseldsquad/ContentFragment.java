@@ -13,8 +13,8 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class ContentFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener{
-    public static final String PREFS_NAME = "JLQPrefsFile";
-    private String baseAssetUrl = "file:///android_asset/";
+    private static final String PREFS_NAME = "JLQPrefsFile";
+    private static final String BASE_ASSET_URL = "file:///android_asset/";
 
     private Realm realm;
 
@@ -236,7 +236,7 @@ public class ContentFragment extends Fragment implements SharedPreferences.OnSha
 
         @Override
         protected void onPostExecute(String result) {
-            webView.loadDataWithBaseURL(baseAssetUrl, result, "text/html", "utf-8", null);
+            webView.loadDataWithBaseURL(BASE_ASSET_URL, result, "text/html", "utf-8", null);
         }
     }
 

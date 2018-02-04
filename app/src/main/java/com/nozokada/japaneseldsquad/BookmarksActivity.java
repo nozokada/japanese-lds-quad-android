@@ -23,7 +23,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class BookmarksActivity extends AppCompatActivity {
-    private final String PREFS_NAME = "JLQPrefsFile";
+    private static final String PREFS_NAME = "JLQPrefsFile";
 
     private Realm realm;
 
@@ -47,10 +47,10 @@ public class BookmarksActivity extends AppCompatActivity {
         settings = getSharedPreferences(PREFS_NAME, 0);
         englishEnabled = settings.getBoolean("englishEnabled", false);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        listView = (ListView) findViewById(R.id.list);
+        listView = findViewById(R.id.list);
 
         realm = Realm.getDefaultInstance();
 
@@ -70,17 +70,17 @@ public class BookmarksActivity extends AppCompatActivity {
                     if (englishEnabled) {
                         String enText = bookmarksList.get(position).getName_eng();
 
-                        TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+                        TextView text1 = view.findViewById(android.R.id.text1);
                         text1.setText(jpText);
 
-                        TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+                        TextView text2 = view.findViewById(android.R.id.text2);
                         text2.setVisibility(View.VISIBLE);
                         text2.setText(enText);
                     }
                     else {
-                        TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+                        TextView text1 = view.findViewById(android.R.id.text1);
                         text1.setText(jpText);
-                        TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+                        TextView text2 = view.findViewById(android.R.id.text2);
                         text2.setVisibility(View.GONE);
                     }
 
@@ -129,7 +129,7 @@ public class BookmarksActivity extends AppCompatActivity {
         }
         else {
             // No bookmarks
-            TextView textView = (TextView) findViewById(R.id.text);
+            TextView textView = findViewById(R.id.text);
             textView.setText(getText(R.string.no_bookmark_msg));
         }
     }
@@ -142,7 +142,7 @@ public class BookmarksActivity extends AppCompatActivity {
 
         englishEnabled = settings.getBoolean("englishEnabled", false);
 
-        englishSwitch = (SwitchCompat) item.getActionView().findViewById(R.id.switchForActionBar);
+        englishSwitch = item.getActionView().findViewById(R.id.switchForActionBar);
         englishSwitch.setChecked(englishEnabled);
 
         englishSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
