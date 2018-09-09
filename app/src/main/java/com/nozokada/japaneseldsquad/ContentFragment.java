@@ -136,7 +136,7 @@ public class ContentFragment extends Fragment implements SharedPreferences.OnSha
             }
 
             StringBuilder pageContents = new StringBuilder();
-            RealmResults<Scripture> scriptures = scripturesList.where().equalTo("chapter", targetChapter).findAllSorted("id");
+            RealmResults<Scripture> scriptures = scripturesList.where().equalTo("chapter", targetChapter).findAll().sort("id");
 
             Scripture title = scriptures.where().equalTo("verse", "title").findFirst();
             if (title != null) {

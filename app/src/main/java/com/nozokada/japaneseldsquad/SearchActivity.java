@@ -118,7 +118,7 @@ public class SearchActivity extends AppCompatActivity implements OnQueryTextList
             searchResultsList = realm.where(Scripture.class).equalTo("id", "-1").findAll();
         else
             searchResultsList = realm.where(Scripture.class).contains("scripture_eng_search", newText, Case.INSENSITIVE)
-                    .or().contains("scripture_jpn_search", newText).findAllSorted("id");
+                    .or().contains("scripture_jpn_search", newText).findAll().sort("id");
 
         if (searchResultsList.size() > 0)
             textView.setVisibility(View.GONE);

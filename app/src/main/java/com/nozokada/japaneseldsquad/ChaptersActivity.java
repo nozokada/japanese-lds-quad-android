@@ -77,9 +77,9 @@ public class ChaptersActivity extends AppCompatActivity {
         if (targetBook.getLink().startsWith("hymns")) hymnsViewed = true;
 
         if (gsViewed || hymnsViewed)
-            titleChaptersList = targetBook.getChild_scriptures().where().equalTo("verse", "title").findAllSorted("id");
+            titleChaptersList = targetBook.getChild_scriptures().where().equalTo("verse", "title").findAll().sort("id");
 
-        chaptersList = targetBook.getChild_scriptures().where().equalTo("verse", "counter").findAllSorted("id");
+        chaptersList = targetBook.getChild_scriptures().where().equalTo("verse", "counter").findAll().sort("id");
 
         if (titleChaptersList != null) {
             if (titleChaptersList.first().getScripture_eng().equals(""))

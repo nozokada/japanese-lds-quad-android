@@ -54,7 +54,7 @@ public class BookmarksActivity extends AppCompatActivity {
 
         realm = Realm.getDefaultInstance();
 
-        bookmarksList = realm.where(Bookmark.class).findAllSorted("date");
+        bookmarksList = realm.where(Bookmark.class).findAll().sort("date");
 
         getSupportActionBar().setTitle(getString(R.string.bookmarks));
 

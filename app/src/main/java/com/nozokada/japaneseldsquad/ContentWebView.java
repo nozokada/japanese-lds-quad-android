@@ -238,7 +238,7 @@ public class ContentWebView extends WebView {
             String verseId = path[path.length - 2];
             Realm realm = Realm.getDefaultInstance();
 
-            RealmResults<Scripture> scripturesFound = realm.where(Scripture.class).equalTo("id", verseId).findAllSorted("id");
+            RealmResults<Scripture> scripturesFound = realm.where(Scripture.class).equalTo("id", verseId).findAll().sort("id");
             if (scripturesFound.size() == 0)
                 return;
 
@@ -275,7 +275,7 @@ public class ContentWebView extends WebView {
                 String linkName = path[0];
                 Realm realm = Realm.getDefaultInstance();
 
-                RealmResults<Book> booksFound = realm.where(Book.class).equalTo("link", linkName).findAllSorted("id");
+                RealmResults<Book> booksFound = realm.where(Book.class).equalTo("link", linkName).findAll().sort("id");
 
                 if (booksFound.size() > 0) {
                     Book nextBook = booksFound.last();
@@ -305,8 +305,8 @@ public class ContentWebView extends WebView {
                 }
 
                 Realm realm = Realm.getDefaultInstance();
-                Book nextBook = realm.where(Book.class).equalTo("link", linkName).findAllSorted("id").last();
-                int chaptersCount = nextBook.getChild_scriptures().where().equalTo("verse", "counter").findAllSorted("id").last().getChapter();
+                Book nextBook = realm.where(Book.class).equalTo("link", linkName).findAll().sort("id").last();
+                int chaptersCount = nextBook.getChild_scriptures().where().equalTo("verse", "counter").findAll().sort("id").last().getChapter();
 
                 Intent intent = new Intent(fragmentActivity, ContentActivity.class);
                 intent.putExtra("id", nextBook.getId());
