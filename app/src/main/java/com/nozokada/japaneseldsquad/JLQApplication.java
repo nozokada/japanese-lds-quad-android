@@ -8,8 +8,6 @@ import com.google.android.gms.analytics.StandardExceptionParser;
 import com.google.android.gms.analytics.Tracker;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +20,7 @@ import io.realm.exceptions.RealmFileException;
 
 public class JLQApplication extends Application {
     private static final String DEFAULT_REALM_FILENAME = "jlq.realm";
-    private static final String TEMPORARY_REALM_FILENAME = "tmp.realm";
+    private static final String NEW_DEFAULT_REALM_FILENAME = "jlq_new.realm";
     private static final int CURRENT_SCHEMA_VERSION = 1;
     private static final String PROPERTY_ID = "UA-113517187-1";
     HashMap<TrackerName, Tracker> trackers = new HashMap<>();
@@ -41,27 +39,23 @@ public class JLQApplication extends Application {
         String defaultRealmParentPath = defaultRealmPath.substring(0, defaultRealmPath.lastIndexOf("/"));
         File defaultRealmFile = new File(defaultRealmParentPath + "/" + DEFAULT_REALM_FILENAME);
 
-        String tmpRealmPath = defaultRealmParentPath + "/" + TEMPORARY_REALM_FILENAME;
+        RealmConfiguration defaultConfig = new RealmConfiguration.Builder().name(DEFAULT_REALM_FILENAME)
+                .schemaVersion(CURRENT_SCHEMA_VERSION)
+                .migration(new Migration())
+                .build();
+        Realm.setDefaultConfiguration(defaultConfig);
 
         if (defaultRealmFile.exists()) {
-            createTemporaryRealmFile(defaultRealmFile, defaultRealmParentPath);
-
-            RealmConfiguration tmpConfig = new RealmConfiguration.Builder().name(TEMPORARY_REALM_FILENAME)
-                    .schemaVersion(CURRENT_SCHEMA_VERSION)
-                    .migration(new Migration())
-                    .build();
             try {
-                Realm realmToCopy = Realm.getInstance(tmpConfig);
-                configureBundleOrExistingRealmFile(defaultRealmParentPath, true);
-                copyUserDataToDefaultRealm(realmToCopy);
+                Realm realmToCopy = Realm.getInstance(defaultConfig);
+                configureBundleRealmFile(defaultRealmParentPath, realmToCopy);
             } catch (RealmFileException e) {
                 sendAnalytics(e);
-                configureBundleOrExistingRealmFile(defaultRealmParentPath, false);
+                configureBundleRealmFile(defaultRealmParentPath, null);
             }
-            removeTemporaryRealmFile(tmpRealmPath);
         }
         else {
-            configureBundleOrExistingRealmFile(defaultRealmParentPath, true);
+            configureBundleRealmFile(defaultRealmParentPath, null);
         }
     }
 
@@ -88,38 +82,28 @@ public class JLQApplication extends Application {
         );
     }
 
-    private void createTemporaryRealmFile(File defaultRealmFile, String defaultRealmParentPath) {
-        try {
-            InputStream defaultRealmInputStream = new FileInputStream(defaultRealmFile);
-            copyBundledRealmFile(defaultRealmInputStream, defaultRealmParentPath, TEMPORARY_REALM_FILENAME);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+    private void configureBundleRealmFile(String defaultRealmParentPath, Realm realmToCopy) {
+        copyBundledRealmFile(getResources().openRawResource(R.raw.jlq), defaultRealmParentPath, NEW_DEFAULT_REALM_FILENAME);
+        if (realmToCopy != null) {
+            copyUserDataToDefaultRealm(realmToCopy);
+            boolean success = new File(defaultRealmParentPath + "/" + DEFAULT_REALM_FILENAME).delete();
         }
-    }
-
-    private void removeTemporaryRealmFile(String tmpRealmPath) {
-        new File(tmpRealmPath).delete();
+        File realmFile = new File(defaultRealmParentPath + "/" + NEW_DEFAULT_REALM_FILENAME);
+        boolean success = realmFile.renameTo(new File(defaultRealmParentPath + "/" + DEFAULT_REALM_FILENAME));
     }
 
     private void copyUserDataToDefaultRealm(Realm realmToCopy) {
         final RealmResults<Bookmark> bookmarksToCopy = realmToCopy.where(Bookmark.class).findAll();
 
-        Realm realm = Realm.getDefaultInstance();
+        RealmConfiguration config = new RealmConfiguration.Builder().name(NEW_DEFAULT_REALM_FILENAME)
+                .schemaVersion(CURRENT_SCHEMA_VERSION)
+                .migration(new Migration())
+                .build();
+        Realm realm = Realm.getInstance(config);
         copyUserBookmarks(realm, bookmarksToCopy);
 
         realm.close();
         realmToCopy.close();
-    }
-
-    private void configureBundleOrExistingRealmFile(String defaultRealmParentPath, boolean bundle) {
-        if(bundle) {
-            copyBundledRealmFile(getResources().openRawResource(R.raw.jlq), defaultRealmParentPath, DEFAULT_REALM_FILENAME);
-        }
-        RealmConfiguration config = new RealmConfiguration.Builder().name(DEFAULT_REALM_FILENAME)
-                .schemaVersion(CURRENT_SCHEMA_VERSION)
-                .migration(new Migration())
-                .build();
-        Realm.setDefaultConfiguration(config);
     }
 
     private void copyUserBookmarks(Realm realm, final RealmResults<Bookmark> bookmarksToCopy) {
