@@ -2,28 +2,19 @@ package com.nozokada.japaneseldsquad;
 
 import android.app.Application;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.StandardExceptionParser;
-import com.google.android.gms.analytics.Tracker;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
-import io.realm.exceptions.RealmFileException;
 
 public class JLQApplication extends Application {
     private static final String DEFAULT_REALM_FILENAME = "jlq.realm";
     private static final String NEW_DEFAULT_REALM_FILENAME = "jlq_new.realm";
     private static final int CURRENT_SCHEMA_VERSION = 1;
-    private static final String PROPERTY_ID = "UA-113517187-1";
-    HashMap<TrackerName, Tracker> trackers = new HashMap<>();
 
     @Override
     public void onCreate() {
@@ -46,53 +37,25 @@ public class JLQApplication extends Application {
         Realm.setDefaultConfiguration(defaultConfig);
 
         if (defaultRealmFile.exists()) {
-            try {
-                Realm realmToCopy = Realm.getInstance(defaultConfig);
-                configureBundleRealmFile(defaultRealmParentPath, realmToCopy);
-            } catch (RealmFileException e) {
-                sendAnalytics(e);
-                configureBundleRealmFile(defaultRealmParentPath, null);
-            }
+            Realm realmToCopy = Realm.getInstance(defaultConfig);
+            configureDefaultRealm(defaultRealmParentPath, realmToCopy);
         }
         else {
-            configureBundleRealmFile(defaultRealmParentPath, null);
+            configureDefaultRealm(defaultRealmParentPath, null);
         }
     }
 
-    public enum TrackerName {
-        APP_TRACKER
-    }
-
-    synchronized Tracker getTracker(TrackerName trackerId) {
-        if (!trackers.containsKey(trackerId)) {
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            Tracker tracker = analytics.newTracker(PROPERTY_ID);
-            trackers.put(trackerId, tracker);
-        }
-        return trackers.get(trackerId);
-    }
-
-    private void sendAnalytics(Exception e) {
-        Tracker tracker = getTracker(TrackerName.APP_TRACKER);
-        tracker.send(new HitBuilders.ExceptionBuilder()
-                .setDescription(new StandardExceptionParser(this, null)
-                        .getDescription(Thread.currentThread().getName(), e))
-                .setFatal(false)
-                .build()
-        );
-    }
-
-    private void configureBundleRealmFile(String defaultRealmParentPath, Realm realmToCopy) {
-        copyBundledRealmFile(getResources().openRawResource(R.raw.jlq), defaultRealmParentPath, NEW_DEFAULT_REALM_FILENAME);
+    private void configureDefaultRealm(String defaultRealmParentPath, Realm realmToCopy) {
+        copyFile(getResources().openRawResource(R.raw.jlq), defaultRealmParentPath, NEW_DEFAULT_REALM_FILENAME);
         if (realmToCopy != null) {
-            copyUserDataToDefaultRealm(realmToCopy);
+            copyUserDataToNewDefaultRealm(realmToCopy);
             boolean success = new File(defaultRealmParentPath + "/" + DEFAULT_REALM_FILENAME).delete();
         }
         File realmFile = new File(defaultRealmParentPath + "/" + NEW_DEFAULT_REALM_FILENAME);
         boolean success = realmFile.renameTo(new File(defaultRealmParentPath + "/" + DEFAULT_REALM_FILENAME));
     }
 
-    private void copyUserDataToDefaultRealm(Realm realmToCopy) {
+    private void copyUserDataToNewDefaultRealm(Realm realmToCopy) {
         final RealmResults<Bookmark> bookmarksToCopy = realmToCopy.where(Bookmark.class).findAll();
 
         RealmConfiguration config = new RealmConfiguration.Builder().name(NEW_DEFAULT_REALM_FILENAME)
@@ -121,7 +84,7 @@ public class JLQApplication extends Application {
         });
     }
 
-    private void copyBundledRealmFile(InputStream inputStream, String defaultPath, String outFileName) {
+    private void copyFile(InputStream inputStream, String defaultPath, String outFileName) {
         try {
             File file = new File(defaultPath, outFileName);
             FileOutputStream outputStream = new FileOutputStream(file);
@@ -131,7 +94,6 @@ public class JLQApplication extends Application {
                 outputStream.write(buf, 0, bytesRead);
             }
             outputStream.close();
-//            file.getAbsolutePath();
         } catch (IOException e) {
             e.printStackTrace();
         }
