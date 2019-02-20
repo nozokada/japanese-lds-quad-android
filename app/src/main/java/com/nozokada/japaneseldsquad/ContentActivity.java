@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
@@ -39,8 +38,8 @@ public class ContentActivity extends AppCompatActivity {
     private ContentFragmentStatePagerAdapter fragmentStatePagerAdapter;
 
     private SharedPreferences settings;
-    private SwitchCompat englishSwitch;
-    private boolean englishEnabled;
+    private SwitchCompat dualSwitch;
+    private boolean dualEnabled;
     private boolean englishExists = true;
 
     private boolean gsViewed = false;
@@ -53,7 +52,7 @@ public class ContentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_content);
 
         settings = getSharedPreferences(PREFS_NAME, 0);
-        englishEnabled = settings.getBoolean("englishEnabled", false);
+        dualEnabled = settings.getBoolean("dualEnabled", false);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -148,7 +147,7 @@ public class ContentActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
 
-        if (englishEnabled != settings.getBoolean("englishEnabled", false)) {
+        if (dualEnabled != settings.getBoolean("dualEnabled", false)) {
             viewPager.setAdapter(fragmentStatePagerAdapter);
             viewPager.setCurrentItem(currentIndex);
         }
@@ -162,16 +161,16 @@ public class ContentActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.switchEng);
         item.setActionView(R.layout.switch_eng);
 
-        englishEnabled = settings.getBoolean("englishEnabled", false);
+        dualEnabled = settings.getBoolean("dualEnabled", false);
 
-        englishSwitch = item.getActionView().findViewById(R.id.switchForActionBar);
-        englishSwitch.setChecked(englishEnabled);
+        dualSwitch = item.getActionView().findViewById(R.id.switchForActionBar);
+        dualSwitch.setChecked(dualEnabled);
 
-        englishSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        dualSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putBoolean("englishEnabled", isChecked);
+                editor.putBoolean("dualEnabled", isChecked);
                 editor.apply();
 
 //                fragmentStatePagerAdapter.notifyDataSetChanged();
@@ -181,8 +180,8 @@ public class ContentActivity extends AppCompatActivity {
             }
         });
 
-        if (englishExists) englishSwitch.setEnabled(true);
-        else englishSwitch.setEnabled(false);
+        if (englishExists) dualSwitch.setEnabled(true);
+        else dualSwitch.setEnabled(false);
 
         return super.onCreateOptionsMenu(menu);
     }

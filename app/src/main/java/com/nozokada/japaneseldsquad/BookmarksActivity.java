@@ -32,8 +32,8 @@ public class BookmarksActivity extends AppCompatActivity {
     private ArrayAdapter<Bookmark> arrayAdapter;
 
     private SharedPreferences settings;
-    private SwitchCompat englishSwitch;
-    private boolean englishEnabled;
+    private SwitchCompat dualSwitch;
+    private boolean dualEnabled;
 
     private Toolbar toolbar;
     private ListView listView;
@@ -45,7 +45,7 @@ public class BookmarksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
 
         settings = getSharedPreferences(PREFS_NAME, 0);
-        englishEnabled = settings.getBoolean("englishEnabled", false);
+        dualEnabled = settings.getBoolean("dualEnabled", false);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -63,11 +63,11 @@ public class BookmarksActivity extends AppCompatActivity {
                 public View getView(int position, View convertView, ViewGroup parent) {
                     View view = super.getView(position, convertView, parent);
 
-                    englishEnabled = settings.getBoolean("englishEnabled", false);
+                    dualEnabled = settings.getBoolean("dualEnabled", false);
 
                     String jpText = bookmarksList.get(position).getName_jpn();
 
-                    if (englishEnabled) {
+                    if (dualEnabled) {
                         String enText = bookmarksList.get(position).getName_eng();
 
                         TextView text1 = view.findViewById(android.R.id.text1);
@@ -140,16 +140,16 @@ public class BookmarksActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.switchEng);
         item.setActionView(R.layout.switch_eng);
 
-        englishEnabled = settings.getBoolean("englishEnabled", false);
+        dualEnabled = settings.getBoolean("dualEnabled", false);
 
-        englishSwitch = item.getActionView().findViewById(R.id.switchForActionBar);
-        englishSwitch.setChecked(englishEnabled);
+        dualSwitch = item.getActionView().findViewById(R.id.switchForActionBar);
+        dualSwitch.setChecked(dualEnabled);
 
-        englishSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        dualSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putBoolean("englishEnabled", isChecked);
+                editor.putBoolean("dualEnabled", isChecked);
                 editor.apply();
 
                 if (arrayAdapter != null)

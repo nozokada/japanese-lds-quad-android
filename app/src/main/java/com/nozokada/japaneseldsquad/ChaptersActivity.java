@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,8 +34,8 @@ public class ChaptersActivity extends AppCompatActivity {
     private ArrayAdapter<Scripture> arrayAdapter;
 
     private SharedPreferences settings;
-    private SwitchCompat englishSwitch;
-    private boolean englishEnabled;
+    private SwitchCompat dualSwitch;
+    private boolean dualEnabled;
     private boolean englishExists = true;
 
     private boolean gsViewed = false;
@@ -51,7 +50,7 @@ public class ChaptersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
 
         settings = getSharedPreferences(PREFS_NAME, 0);
-        englishEnabled = settings.getBoolean("englishEnabled", false);
+        dualEnabled = settings.getBoolean("dualEnabled", false);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -92,14 +91,14 @@ public class ChaptersActivity extends AppCompatActivity {
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
 
-                englishEnabled = settings.getBoolean("englishEnabled", false);
+                dualEnabled = settings.getBoolean("dualEnabled", false);
 
                 String jpText = chaptersList.get(position).getScripture_jpn() + " ";
 
                 if (gsViewed || hymnsViewed)
                     jpText += " " + titleChaptersList.get(position).getScripture_jpn().replaceAll("<[^>]*>", "");
 
-                if (englishEnabled && englishExists) {
+                if (dualEnabled && englishExists) {
                     String enText = chaptersList.get(position).getScripture_eng() + " ";
 
                     if (gsViewed || hymnsViewed)
@@ -153,24 +152,24 @@ public class ChaptersActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.switchEng);
         item.setActionView(R.layout.switch_eng);
 
-        englishEnabled = settings.getBoolean("englishEnabled", false);
+        dualEnabled = settings.getBoolean("dualEnabled", false);
 
-        englishSwitch = item.getActionView().findViewById(R.id.switchForActionBar);
-        englishSwitch.setChecked(englishEnabled);
+        dualSwitch = item.getActionView().findViewById(R.id.switchForActionBar);
+        dualSwitch.setChecked(dualEnabled);
 
-        englishSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        dualSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putBoolean("englishEnabled", isChecked);
+                editor.putBoolean("dualEnabled", isChecked);
                 editor.apply();
 
                 arrayAdapter.notifyDataSetChanged();
             }
         });
 
-        if (englishExists) englishSwitch.setEnabled(true);
-        else englishSwitch.setEnabled(false);
+        if (englishExists) dualSwitch.setEnabled(true);
+        else dualSwitch.setEnabled(false);
 
         return super.onCreateOptionsMenu(menu);
     }
