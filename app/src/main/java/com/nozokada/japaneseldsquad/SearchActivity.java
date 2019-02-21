@@ -4,21 +4,17 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -36,8 +32,8 @@ public class SearchActivity extends AppCompatActivity implements OnQueryTextList
     private ArrayAdapter<Scripture> arrayAdapter;
 
     private SharedPreferences settings;
-    private SwitchCompat englishSwitch;
-    private boolean englishEnabled;
+    private SwitchCompat dualSwitch;
+    private boolean dualEnabled;
 
     private Toolbar toolbar;
     private ListView listView;
@@ -50,7 +46,7 @@ public class SearchActivity extends AppCompatActivity implements OnQueryTextList
         setContentView(R.layout.activity_list);
 
         settings = getSharedPreferences(PREFS_NAME, 0);
-        englishEnabled = settings.getBoolean("englishEnabled", false);
+        dualEnabled = settings.getBoolean("dualEnabled", false);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,15 +77,15 @@ public class SearchActivity extends AppCompatActivity implements OnQueryTextList
 //        MenuItem item = menu.findItem(R.id.switchEng);
 //        item.setActionView(R.layout.switch_eng);
 //
-//        englishEnabled = settings.getBoolean("englishEnabled", false);
+//        dualEnabled = settings.getBoolean("dualEnabled", false);
 //
-//        englishSwitch = (SwitchCompat) item.getActionView().findViewById(R.id.switchForActionBar);
-//        englishSwitch.setChecked(englishEnabled);
+//        dualSwitch = (SwitchCompat) item.getActionView().findViewById(R.id.switchForActionBar);
+//        dualSwitch.setChecked(dualEnabled);
 //
-//        englishSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//        dualSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 //                SharedPreferences.Editor editor = settings.edit();
-//                editor.putBoolean("englishEnabled", isChecked);
+//                editor.putBoolean("dualEnabled", isChecked);
 //                editor.apply();
 
 //                if (arrayAdapter != null)
@@ -165,7 +161,7 @@ public class SearchActivity extends AppCompatActivity implements OnQueryTextList
                             .append(" : ").append(scripture.getVerse());
                 }
 
-                if (settings.getBoolean("englishEnabled", false)) {
+                if (settings.getBoolean("dualEnabled", false)) {
                     StringBuilder enText = new StringBuilder();
 
                     TextView text1 = view.findViewById(android.R.id.text1);
