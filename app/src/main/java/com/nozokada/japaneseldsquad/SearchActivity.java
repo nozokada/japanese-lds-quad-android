@@ -79,10 +79,10 @@ public class SearchActivity extends AppCompatActivity implements OnQueryTextList
 //
 //        dualEnabled = settings.getBoolean("dualEnabled", false);
 //
-//        englishSwitch = (SwitchCompat) item.getActionView().findViewById(R.id.switchForActionBar);
-//        englishSwitch.setChecked(dualEnabled);
+//        dualSwitch = (SwitchCompat) item.getActionView().findViewById(R.id.switchForActionBar);
+//        dualSwitch.setChecked(dualEnabled);
 //
-//        englishSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//        dualSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 //                SharedPreferences.Editor editor = settings.edit();
 //                editor.putBoolean("dualEnabled", isChecked);

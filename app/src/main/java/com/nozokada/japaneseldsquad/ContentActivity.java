@@ -40,7 +40,7 @@ public class ContentActivity extends AppCompatActivity {
     private SharedPreferences settings;
     private SwitchCompat dualSwitch;
     private boolean dualEnabled;
-    private boolean englishExists = true;
+    private boolean secondaryExists = true;
 
     private boolean gsViewed = false;
 
@@ -88,7 +88,7 @@ public class ContentActivity extends AppCompatActivity {
 
         if (scripturesList != null) {
             if (scripturesList.first().getScripture_eng().equals(""))
-                englishExists = false;
+                secondaryExists = false;
         }
 
         if (targetBook.getLink().startsWith("gs"))
@@ -180,7 +180,7 @@ public class ContentActivity extends AppCompatActivity {
             }
         });
 
-        if (englishExists) dualSwitch.setEnabled(true);
+        if (secondaryExists) dualSwitch.setEnabled(true);
         else dualSwitch.setEnabled(false);
 
         return super.onCreateOptionsMenu(menu);

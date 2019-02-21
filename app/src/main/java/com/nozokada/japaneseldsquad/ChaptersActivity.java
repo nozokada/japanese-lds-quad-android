@@ -36,7 +36,7 @@ public class ChaptersActivity extends AppCompatActivity {
     private SharedPreferences settings;
     private SwitchCompat dualSwitch;
     private boolean dualEnabled;
-    private boolean englishExists = true;
+    private boolean secondaryExists = true;
 
     private boolean gsViewed = false;
     private boolean hymnsViewed = false;
@@ -82,7 +82,7 @@ public class ChaptersActivity extends AppCompatActivity {
 
         if (titleChaptersList != null) {
             if (titleChaptersList.first().getScripture_eng().equals(""))
-                englishExists = false;
+                secondaryExists = false;
         }
 
         getSupportActionBar().setTitle(targetBookName);
@@ -98,7 +98,7 @@ public class ChaptersActivity extends AppCompatActivity {
                 if (gsViewed || hymnsViewed)
                     jpText += " " + titleChaptersList.get(position).getScripture_jpn().replaceAll("<[^>]*>", "");
 
-                if (dualEnabled && englishExists) {
+                if (dualEnabled && secondaryExists) {
                     String enText = chaptersList.get(position).getScripture_eng() + " ";
 
                     if (gsViewed || hymnsViewed)
@@ -168,7 +168,7 @@ public class ChaptersActivity extends AppCompatActivity {
             }
         });
 
-        if (englishExists) dualSwitch.setEnabled(true);
+        if (secondaryExists) dualSwitch.setEnabled(true);
         else dualSwitch.setEnabled(false);
 
         return super.onCreateOptionsMenu(menu);
