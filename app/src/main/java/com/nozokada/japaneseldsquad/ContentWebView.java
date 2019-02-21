@@ -19,19 +19,11 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class ContentWebView extends WebView {
-    private static final String BASE_ASSET_URL = "file:///android_asset/";
-    private static final String DEFAULT_FONT = "Hiragino Kaku Gothic ProN";
-    private static final String DEFAULT_FONT_COLOR = "rgb(0,0,0)";
-    private static final String DEFAULT_BACKGROUND_COLOR = "rgb(255,255,255)";
-    private static final int NORMAL = 100;
-    private static final int LARGE = 150;
-    private static final int XLARGE = 200;
-
     private FragmentActivity fragmentActivity;
     private ProgressBar spinner;
     private GestureDetector detector;
 
-    private int currentZoomLevel = 100;
+    private int currentZoomLevel = Constant.NORMAL;
 
     private String currentBookId;
     private int currentChapter;
@@ -90,11 +82,11 @@ public class ContentWebView extends WebView {
     }
 
     private String getCSSHeader() {
-        String font = DEFAULT_FONT;
+        String font = Constant.DEFAULT_FONT;
         double fontSize = 1.0;
         double paddingSize = fontSize;
-        String fontColor = DEFAULT_FONT_COLOR;
-        String backgroundColor = DEFAULT_BACKGROUND_COLOR;
+        String fontColor = Constant.DEFAULT_FONT_COLOR;
+        String backgroundColor = Constant.DEFAULT_BACKGROUND_COLOR;
 
         String bookmarkImageFileName = "bookmark";
 
@@ -198,12 +190,12 @@ public class ContentWebView extends WebView {
             currentZoomLevel = getSettings().getTextZoom();
             double relativeVerticalScrollValue = getRelativeVerticalScrollValue();
 
-            if (currentZoomLevel == NORMAL)
-                getSettings().setTextZoom(LARGE);
-            else if (currentZoomLevel == LARGE)
-                getSettings().setTextZoom(XLARGE);
+            if (currentZoomLevel == Constant.NORMAL)
+                getSettings().setTextZoom(Constant.LARGE);
+            else if (currentZoomLevel == Constant.LARGE)
+                getSettings().setTextZoom(Constant.XLARGE);
             else
-                getSettings().setTextZoom(NORMAL);
+                getSettings().setTextZoom(Constant.NORMAL);
 
             scrollAutomaticallyAfterTextZoomChange(relativeVerticalScrollValue);
 
@@ -216,8 +208,7 @@ public class ContentWebView extends WebView {
         @SuppressWarnings("deprecation")
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
-            url = url.replace(BASE_ASSET_URL, "");
+            url = url.replace(Constant.BASE_ASSET_URL, "");
             String[] path = url.split("/");
             String eventId = path[path.length - 1];
 

@@ -12,10 +12,7 @@ import android.view.ViewGroup;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class ContentFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener{
-    private static final String PREFS_NAME = "JLQPrefsFile";
-    private static final String BASE_ASSET_URL = "file:///android_asset/";
-
+public class ContentFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private Realm realm;
 
     private ContentWebView webView;
@@ -52,7 +49,7 @@ public class ContentFragment extends Fragment implements SharedPreferences.OnSha
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
+        settings = getActivity().getSharedPreferences(Constant.PREFS_NAME, 0);
         settings.registerOnSharedPreferenceChangeListener(this);
         dualEnabled = settings.getBoolean("dualEnabled", false);
 
@@ -179,7 +176,8 @@ public class ContentFragment extends Fragment implements SharedPreferences.OnSha
 
             for(Scripture scripture : scriptures) {
                 String verse = "";
-                if (scriptureViewed) { verse = scripture.getVerse(); }
+                if (scriptureViewed)
+                    verse = scripture.getVerse();
 
                 if (scripture.getId().length() == 6) {
 
@@ -236,7 +234,7 @@ public class ContentFragment extends Fragment implements SharedPreferences.OnSha
 
         @Override
         protected void onPostExecute(String result) {
-            webView.loadDataWithBaseURL(BASE_ASSET_URL, result, "text/html", "utf-8", null);
+            webView.loadDataWithBaseURL(Constant.BASE_ASSET_URL, result, "text/html", "utf-8", null);
         }
     }
 

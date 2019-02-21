@@ -23,8 +23,6 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class SearchActivity extends AppCompatActivity implements OnQueryTextListener {
-    private static final String PREFS_NAME = "JLQPrefsFile";
-
     private Realm realm;
 
     private RealmResults<Scripture> searchResultsList;
@@ -45,7 +43,7 @@ public class SearchActivity extends AppCompatActivity implements OnQueryTextList
 
         setContentView(R.layout.activity_list);
 
-        settings = getSharedPreferences(PREFS_NAME, 0);
+        settings = getSharedPreferences(Constant.PREFS_NAME, 0);
         dualEnabled = settings.getBoolean("dualEnabled", false);
 
         toolbar = findViewById(R.id.toolbar);
