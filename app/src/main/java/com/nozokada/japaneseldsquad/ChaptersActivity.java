@@ -20,8 +20,6 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class ChaptersActivity extends AppCompatActivity {
-    private static final String PREFS_NAME = "JLQPrefsFile";
-
     private Realm realm;
 
     private String bookId;
@@ -49,7 +47,7 @@ public class ChaptersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        settings = getSharedPreferences(PREFS_NAME, 0);
+        settings = getSharedPreferences(Constant.PREFS_NAME, 0);
         dualEnabled = settings.getBoolean("dualEnabled", false);
 
         toolbar = findViewById(R.id.toolbar);
