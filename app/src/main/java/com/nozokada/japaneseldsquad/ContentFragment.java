@@ -28,7 +28,7 @@ public class ContentFragment extends Fragment implements SharedPreferences.OnSha
 
     private SharedPreferences settings;
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
-    private boolean englishEnabled;
+    private boolean dualEnabled;
     private boolean englishExists = true;
 
     private boolean hymnsViewed = false;
@@ -54,7 +54,7 @@ public class ContentFragment extends Fragment implements SharedPreferences.OnSha
 
         settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
         settings.registerOnSharedPreferenceChangeListener(this);
-        englishEnabled = settings.getBoolean("englishEnabled", false);
+        dualEnabled = settings.getBoolean("dualEnabled", false);
 
         if (savedInstanceState == null) {
             bookId = getArguments().getString("id");
@@ -98,8 +98,8 @@ public class ContentFragment extends Fragment implements SharedPreferences.OnSha
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         Log.d("", "onSharedPreferenceChanged with key: " + key);
 
-        if (englishEnabled != sharedPreferences.getBoolean(key, false)) {
-            englishEnabled = sharedPreferences.getBoolean(key, false);
+        if (dualEnabled != sharedPreferences.getBoolean(key, false)) {
+            dualEnabled = sharedPreferences.getBoolean(key, false);
             reload();
         }
     }
@@ -141,7 +141,7 @@ public class ContentFragment extends Fragment implements SharedPreferences.OnSha
             Scripture title = scriptures.where().equalTo("verse", "title").findFirst();
             if (title != null) {
                 pageContents.append("<div class='title'>").append(title.getScripture_jpn()).append("</div>");
-                if (englishEnabled && englishExists) {
+                if (dualEnabled && englishExists) {
                     if (hymnsViewed) pageContents.append("<div class='hymn-title'>").append(title.getScripture_eng()).append("</div>");
                     else pageContents.append("<div class='title'>").append(title.getScripture_eng()).append("</div>");
                 }
@@ -151,30 +151,30 @@ public class ContentFragment extends Fragment implements SharedPreferences.OnSha
                 Scripture counter = scriptures.where().equalTo("verse", "counter").findFirst();
                 if (counter != null) {
                     pageContents.append("<div class='subtitle'>").append(counter.getScripture_jpn()).append("</div>");
-                    if (englishEnabled && englishExists)
+                    if (dualEnabled && englishExists)
                         pageContents.append("<div class='subtitle'>").append(counter.getScripture_eng()).append("</div>");
                 }
             }
 
             Scripture preface = scriptures.where().equalTo("verse", "preface").findFirst();
             if (preface != null) {
-                if (englishEnabled && englishExists) { pageContents.append("<hr>"); }
+                if (dualEnabled && englishExists) { pageContents.append("<hr>"); }
                 pageContents.append("<div class='paragraph'>").append(preface.getScripture_jpn()).append("</div>");
-                if (englishEnabled && englishExists) pageContents.append("<div class='paragraph'>").append(preface.getScripture_eng()).append("</div>");
+                if (dualEnabled && englishExists) pageContents.append("<div class='paragraph'>").append(preface.getScripture_eng()).append("</div>");
             }
 
             Scripture intro = scriptures.where().equalTo("verse", "intro").findFirst();
             if (intro != null) {
-                if (englishEnabled && englishExists) { pageContents.append("<hr>"); }
+                if (dualEnabled && englishExists) { pageContents.append("<hr>"); }
                 pageContents.append("<div class='paragraph'>").append(intro.getScripture_jpn()).append("</div>");
-                if (englishEnabled && englishExists) pageContents.append("<div class='paragraph'>").append(intro.getScripture_eng()).append("</div>");
+                if (dualEnabled && englishExists) pageContents.append("<div class='paragraph'>").append(intro.getScripture_eng()).append("</div>");
             }
 
             Scripture summary = scriptures.where().equalTo("verse", "summary").findFirst();
             if (summary != null) {
-                if (englishEnabled && englishExists) { pageContents.append("<hr>"); }
+                if (dualEnabled && englishExists) { pageContents.append("<hr>"); }
                 pageContents.append("<div class='paragraph'><i>").append(summary.getScripture_jpn()).append("</i></div>");
-                if (englishEnabled && englishExists) pageContents.append("<div class='paragraph'><i>").append(summary.getScripture_eng()).append("</i></div>");
+                if (dualEnabled && englishExists) pageContents.append("<div class='paragraph'><i>").append(summary.getScripture_eng()).append("</i></div>");
             }
 
             for(Scripture scripture : scriptures) {
@@ -190,7 +190,7 @@ public class ContentFragment extends Fragment implements SharedPreferences.OnSha
                     RealmResults<Bookmark> bookmarksFound = realm.where(Bookmark.class).equalTo("id", scripture.getId()).findAll();
                     if (bookmarksFound.size() > 0) bookmarked = true;
 
-                    if (englishEnabled && englishExists) {
+                    if (dualEnabled && englishExists) {
                         pageContents.append("<hr>");
 
                         pageContents.append("<div id='").append(scripture.getId()).append("' ");
