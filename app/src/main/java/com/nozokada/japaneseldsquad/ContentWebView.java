@@ -18,6 +18,8 @@ import java.util.Date;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
+import static java.lang.Math.sqrt;
+
 public class ContentWebView extends WebView {
     private FragmentActivity fragmentActivity;
     private ProgressBar spinner;
@@ -83,8 +85,8 @@ public class ContentWebView extends WebView {
 
     private String getCSSHeader() {
         String font = Constant.DEFAULT_FONT;
-        double fontSize = 1.0;
-        double paddingSize = fontSize;
+        double fontSize = (double) currentZoomLevel / (double) Constant.NORMAL;
+        double paddingSize = sqrt(sqrt(fontSize));
         String fontColor = Constant.DEFAULT_FONT_COLOR;
         String backgroundColor = Constant.DEFAULT_BACKGROUND_COLOR;
 
@@ -95,8 +97,6 @@ public class ContentWebView extends WebView {
 //            fontColor = "rgb(186,186,186)"
 //            backgroundColor = "rgb(33,34,37)"
 //        }
-
-//        String image = "<img src='" + bookmarkImageFileName + ".png'/>";
 
         String headings =
                 ".title {" +
@@ -116,9 +116,9 @@ public class ContentWebView extends WebView {
                 "}";
 
         String body =
-                "body {" +
+                "body,tr {" +
                 "margin: 0;" +
-                "padding: " + paddingSize + "em;" +
+                "padding: " + paddingSize / 2 + "em " + paddingSize + "em;" +
                 "font-family: '" + font + "';" +
                 "line-height: 1.4;" +
                 "font-size: " + fontSize + "em;" +
@@ -129,7 +129,7 @@ public class ContentWebView extends WebView {
 
         String verse =
                 ".verse {" +
-                "padding-bottom: 5px;" +
+                "padding: " + paddingSize / 2 + "em 0;" +
                 "}";
 
         String verseNumber =
@@ -153,12 +153,12 @@ public class ContentWebView extends WebView {
 
         String paragraph =
                 ".paragraph {" +
-                "margin-bottom: 15px;" +
+                "padding: " + paddingSize / 2 + "em 0;" +
                 "}";
 
         String hymnVerse =
                 ".hymn-verse {" +
-                "padding: 5px;" +
+                "padding: " + paddingSize / 2 + "em 0;" +
                 "}" +
                 ".hymn-verse ol {" +
                 "margin: 0 auto;" +
@@ -170,7 +170,6 @@ public class ContentWebView extends WebView {
                 "}";
 
         return "<head>" +
-//                image +
                 "<style type='text/css'>" +
                 headings +
                 body +
