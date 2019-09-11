@@ -111,8 +111,8 @@ public class SearchActivity extends AppCompatActivity implements OnQueryTextList
         if (newText.equals(""))
             searchResultsList = realm.where(Scripture.class).equalTo("id", "-1").findAll();
         else
-            searchResultsList = realm.where(Scripture.class).contains("scripture_eng_search", newText, Case.INSENSITIVE)
-                    .or().contains("scripture_jpn_search", newText).findAll().sort("id");
+            searchResultsList = realm.where(Scripture.class).contains("scripture_secondary_raw", newText, Case.INSENSITIVE)
+                    .or().contains("scripture_primary_raw", newText).findAll().sort("id");
 
         if (searchResultsList.size() > 0)
             textView.setVisibility(View.GONE);
@@ -139,22 +139,22 @@ public class SearchActivity extends AppCompatActivity implements OnQueryTextList
 
                 if (hymnsCell) {
                     hymnFound = scripture.getParent_book().getChild_scriptures().where().equalTo("chapter", scripture.getChapter()).findAll();
-                    String title = hymnFound.where().equalTo("verse", "title").findFirst().getScripture_jpn().replaceAll("<[^>]*>", "");
-                    String counter = hymnFound.where().equalTo("verse", "counter").findFirst().getScripture_jpn();
+                    String title = hymnFound.where().equalTo("verse", "title").findFirst().getScripture_primary().replaceAll("<[^>]*>", "");
+                    String counter = hymnFound.where().equalTo("verse", "counter").findFirst().getScripture_primary();
                     jpText.append("賛美歌 ").append(counter).append(" ").append(title).append(" ").append(scripture.getVerse()).append("番");
                 }
                 else if (gsCell) {
                     gsFound = scripture.getParent_book().getChild_scriptures().where().equalTo("chapter", scripture.getChapter()).findAll();
-                    String title = gsFound.where().equalTo("verse", "title").findFirst().getScripture_jpn().replaceAll("<[^>]*>", "");
+                    String title = gsFound.where().equalTo("verse", "title").findFirst().getScripture_primary().replaceAll("<[^>]*>", "");
                     jpText.append("聖句ガイド「").append(title).append("」").append(scripture.getVerse()).append("段落目");
                 }
                 else if (contCell) {
-                    jpText.append(scripture.getParent_book().getParent_book().getName_jpn())
-                            .append(" ").append(scripture.getParent_book().getName_jpn())
+                    jpText.append(scripture.getParent_book().getParent_book().getName_primary())
+                            .append(" ").append(scripture.getParent_book().getName_primary())
                             .append(" ").append(scripture.getVerse()).append("段落目");
                 }
                 else {
-                    jpText.append(scripture.getParent_book().getName_jpn())
+                    jpText.append(scripture.getParent_book().getName_primary())
                             .append(" ").append(scripture.getChapter())
                             .append(" : ").append(scripture.getVerse());
                 }
@@ -168,20 +168,20 @@ public class SearchActivity extends AppCompatActivity implements OnQueryTextList
 
                     if (hymnsCell) {
                         hymnFound = scripture.getParent_book().getChild_scriptures().where().equalTo("chapter", scripture.getChapter()).findAll();
-                        String title = hymnFound.where().equalTo("verse", "title").findFirst().getScripture_eng().replaceAll("<[^>]*>", "");
-                        String counter = hymnFound.where().equalTo("verse", "counter").findFirst().getScripture_eng();
+                        String title = hymnFound.where().equalTo("verse", "title").findFirst().getScripture_secondary().replaceAll("<[^>]*>", "");
+                        String counter = hymnFound.where().equalTo("verse", "counter").findFirst().getScripture_secondary();
                         enText.append("HYMN ").append(counter).append(" ").append(title).append(" Verse ").append(scripture.getVerse());
                     }
                     else if (gsCell) {
                         text2.setVisibility(View.GONE);
                     }
                     else if (contCell) {
-                        enText.append(scripture.getParent_book().getParent_book().getName_eng())
-                                .append(" ").append(scripture.getParent_book().getName_eng())
+                        enText.append(scripture.getParent_book().getParent_book().getName_secondary())
+                                .append(" ").append(scripture.getParent_book().getName_secondary())
                                 .append(" Paragraph ").append(scripture.getVerse());
                     }
                     else {
-                        enText.append(scripture.getParent_book().getName_eng())
+                        enText.append(scripture.getParent_book().getName_secondary())
                                 .append(" ").append(scripture.getChapter())
                                 .append(" : ").append(scripture.getVerse());
                     }
@@ -211,7 +211,7 @@ public class SearchActivity extends AppCompatActivity implements OnQueryTextList
 
                 Intent intent = new Intent(getApplicationContext(), ContentActivity.class);
                 intent.putExtra("id", parentBook.getId());
-                intent.putExtra("name", parentBook.getName_jpn());
+                intent.putExtra("name", parentBook.getName_primary());
                 intent.putExtra("chapter", searchResultsList.get(position).getChapter());
                 intent.putExtra("verse", searchResultsList.get(position).getVerse());
                 intent.putExtra("scriptureId", searchResultsList.get(position).getId());

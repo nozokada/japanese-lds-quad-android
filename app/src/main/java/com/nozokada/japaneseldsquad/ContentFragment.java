@@ -117,7 +117,7 @@ public class ContentFragment extends Fragment implements SharedPreferences.OnSha
             scripturesList = targetBook.getChild_scriptures().sort("id");
 
             if (scripturesList != null) {
-                if (scripturesList.first().getScripture_eng().equals(""))
+                if (scripturesList.first().getScripture_secondary().equals(""))
                     secondaryExists = false;
             }
 
@@ -137,41 +137,41 @@ public class ContentFragment extends Fragment implements SharedPreferences.OnSha
 
             Scripture title = scriptures.where().equalTo("verse", "title").findFirst();
             if (title != null) {
-                pageContents.append("<div class='title'>").append(title.getScripture_jpn()).append("</div>");
+                pageContents.append("<div class='title'>").append(title.getScripture_primary()).append("</div>");
                 if (dualEnabled && secondaryExists) {
-                    if (hymnsViewed) pageContents.append("<div class='hymn-title'>").append(title.getScripture_eng()).append("</div>");
-                    else pageContents.append("<div class='title'>").append(title.getScripture_eng()).append("</div>");
+                    if (hymnsViewed) pageContents.append("<div class='hymn-title'>").append(title.getScripture_secondary()).append("</div>");
+                    else pageContents.append("<div class='title'>").append(title.getScripture_secondary()).append("</div>");
                 }
             }
 
             if (!hymnsViewed) {
                 Scripture counter = scriptures.where().equalTo("verse", "counter").findFirst();
                 if (counter != null) {
-                    pageContents.append("<div class='subtitle'>").append(counter.getScripture_jpn()).append("</div>");
+                    pageContents.append("<div class='subtitle'>").append(counter.getScripture_primary()).append("</div>");
                     if (dualEnabled && secondaryExists)
-                        pageContents.append("<div class='subtitle'>").append(counter.getScripture_eng()).append("</div>");
+                        pageContents.append("<div class='subtitle'>").append(counter.getScripture_secondary()).append("</div>");
                 }
             }
 
             Scripture preface = scriptures.where().equalTo("verse", "preface").findFirst();
             if (preface != null) {
                 if (dualEnabled && secondaryExists) { pageContents.append("<hr>"); }
-                pageContents.append("<div class='paragraph'>").append(preface.getScripture_jpn()).append("</div>");
-                if (dualEnabled && secondaryExists) pageContents.append("<div class='paragraph'>").append(preface.getScripture_eng()).append("</div>");
+                pageContents.append("<div class='paragraph'>").append(preface.getScripture_primary()).append("</div>");
+                if (dualEnabled && secondaryExists) pageContents.append("<div class='paragraph'>").append(preface.getScripture_secondary()).append("</div>");
             }
 
             Scripture intro = scriptures.where().equalTo("verse", "intro").findFirst();
             if (intro != null) {
                 if (dualEnabled && secondaryExists) { pageContents.append("<hr>"); }
-                pageContents.append("<div class='paragraph'>").append(intro.getScripture_jpn()).append("</div>");
-                if (dualEnabled && secondaryExists) pageContents.append("<div class='paragraph'>").append(intro.getScripture_eng()).append("</div>");
+                pageContents.append("<div class='paragraph'>").append(intro.getScripture_primary()).append("</div>");
+                if (dualEnabled && secondaryExists) pageContents.append("<div class='paragraph'>").append(intro.getScripture_secondary()).append("</div>");
             }
 
             Scripture summary = scriptures.where().equalTo("verse", "summary").findFirst();
             if (summary != null) {
                 if (dualEnabled && secondaryExists) { pageContents.append("<hr>"); }
-                pageContents.append("<div class='paragraph'><i>").append(summary.getScripture_jpn()).append("</i></div>");
-                if (dualEnabled && secondaryExists) pageContents.append("<div class='paragraph'><i>").append(summary.getScripture_eng()).append("</i></div>");
+                pageContents.append("<div class='paragraph'><i>").append(summary.getScripture_primary()).append("</i></div>");
+                if (dualEnabled && secondaryExists) pageContents.append("<div class='paragraph'><i>").append(summary.getScripture_secondary()).append("</i></div>");
             }
 
             for(Scripture scripture : scriptures) {
@@ -196,16 +196,16 @@ public class ContentFragment extends Fragment implements SharedPreferences.OnSha
                         pageContents.append(">");
 
                         if (hymnsViewed) {
-                            pageContents.append("<div class='hymn-verse'><ol>").append(scripture.getScripture_jpn()).append("</ol></div>");
-                            pageContents.append("<div class='hymn-verse'><ol>").append(scripture.getScripture_eng()).append("</ol></div>");
+                            pageContents.append("<div class='hymn-verse'><ol>").append(scripture.getScripture_primary()).append("</ol></div>");
+                            pageContents.append("<div class='hymn-verse'><ol>").append(scripture.getScripture_secondary()).append("</ol></div>");
                         }
                         else {
                             pageContents.append("<div class='verse'><a class='verse-number' href='")
                                     .append(scripture.getId()).append("/bookmark'>").append(verse)
-                                    .append("</a> ").append(scripture.getScripture_jpn()).append("</div>");
+                                    .append("</a> ").append(scripture.getScripture_primary()).append("</div>");
                             pageContents.append("<div class='verse'><a class='verse-number' href='")
                                     .append(scripture.getId()).append("/bookmark'>").append(verse)
-                                    .append("</a> ").append(scripture.getScripture_eng()).append("</div>");
+                                    .append("</a> ").append(scripture.getScripture_secondary()).append("</div>");
                         }
                     }
 
@@ -215,12 +215,12 @@ public class ContentFragment extends Fragment implements SharedPreferences.OnSha
                         pageContents.append(">");
 
                         if (hymnsViewed) {
-                            pageContents.append("<div class='hymn-verse'><ol>").append(scripture.getScripture_jpn()).append("</ol></div>");
+                            pageContents.append("<div class='hymn-verse'><ol>").append(scripture.getScripture_primary()).append("</ol></div>");
                         }
                         else {
                             pageContents.append("<div class='verse'><a class='verse-number' href='")
                                     .append(scripture.getId()).append("/bookmark'>").append(verse)
-                                    .append("</a> ").append(scripture.getScripture_jpn()).append("</div>");
+                                    .append("</a> ").append(scripture.getScripture_primary()).append("</div>");
                         }
                     }
                     pageContents.append("</div>");

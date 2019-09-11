@@ -65,7 +65,7 @@ public class BooksActivity extends AppCompatActivity {
         }
 
         if (bookId.equals("0")) targetBookName = getString(R.string.top_name);
-        else targetBookName = targetBook.getName_jpn();
+        else targetBookName = targetBook.getName_primary();
 
         booksList = targetBook.getChild_books().sort("id");
 
@@ -79,14 +79,14 @@ public class BooksActivity extends AppCompatActivity {
 
                 if (dualEnabled) {
                     TextView text1 = view.findViewById(android.R.id.text1);
-                    text1.setText(booksList.get(position).getName_jpn());
+                    text1.setText(booksList.get(position).getName_primary());
                     TextView text2 = view.findViewById(android.R.id.text2);
                     text2.setVisibility(View.VISIBLE);
-                    text2.setText(booksList.get(position).getName_eng());
+                    text2.setText(booksList.get(position).getName_secondary());
                 }
                 else {
                     TextView text1 = view.findViewById(android.R.id.text1);
-                    text1.setText(booksList.get(position).getName_jpn());
+                    text1.setText(booksList.get(position).getName_primary());
                     TextView text2 = view.findViewById(android.R.id.text2);
                     text2.setVisibility(View.GONE);
                 }
@@ -108,7 +108,7 @@ public class BooksActivity extends AppCompatActivity {
                 }
                 else if (nextBook.getChild_scriptures().sort("id").last().getChapter() == 1) {
                     intent = new Intent(getApplicationContext(), ContentActivity.class);
-                    intent.putExtra("name", nextBook.getName_jpn());
+                    intent.putExtra("name", nextBook.getName_primary());
                     intent.putExtra("chapter", 1);
                     intent.putExtra("verse", "");
                     intent.putExtra("count", 1);

@@ -63,10 +63,10 @@ public class BookmarksActivity extends AppCompatActivity {
 
                     dualEnabled = settings.getBoolean("dualEnabled", false);
 
-                    String jpText = bookmarksList.get(position).getName_jpn();
+                    String jpText = bookmarksList.get(position).getName_primary();
 
                     if (dualEnabled) {
-                        String enText = bookmarksList.get(position).getName_eng();
+                        String enText = bookmarksList.get(position).getName_secondary();
 
                         TextView text1 = view.findViewById(android.R.id.text1);
                         text1.setText(jpText);
@@ -113,7 +113,7 @@ public class BookmarksActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(getApplicationContext(), ContentActivity.class);
                     intent.putExtra("id", parentBook.getId());
-                    intent.putExtra("name", parentBook.getName_jpn());
+                    intent.putExtra("name", parentBook.getName_primary());
                     intent.putExtra("chapter", bookmarksList.get(position).getScripture().getChapter());
                     intent.putExtra("verse", bookmarksList.get(position).getScripture().getVerse());
                     intent.putExtra("scriptureId", bookmarksList.get(position).getScripture().getId());

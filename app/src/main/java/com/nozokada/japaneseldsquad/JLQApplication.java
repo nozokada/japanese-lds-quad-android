@@ -14,8 +14,7 @@ import io.realm.RealmResults;
 public class JLQApplication extends Application {
     private static final String DEFAULT_REALM_FILENAME = "jlq.realm";
     private static final String NEW_DEFAULT_REALM_FILENAME = "jlq_new.realm";
-    private static final int CURRENT_SCHEMA_VERSION = 1;
-
+    private static final int CURRENT_SCHEMA_VERSION = 2;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -75,8 +74,8 @@ public class JLQApplication extends Application {
             public void execute(Realm realm) {
                 for (Bookmark bookmarkToCopy : bookmarksToCopy) {
                     Bookmark bookmark = realm.createObject(Bookmark.class, bookmarkToCopy.getId());
-                    bookmark.setName_jpn(bookmarkToCopy.getName_jpn());
-                    bookmark.setName_eng(bookmarkToCopy.getName_eng());
+                    bookmark.setName_primary(bookmarkToCopy.getName_primary());
+                    bookmark.setName_secondary(bookmarkToCopy.getName_secondary());
                     bookmark.setScripture(realm.where(Scripture.class).equalTo("id", bookmark.getId()).findFirst());
                     bookmark.setDate(bookmarkToCopy.getDate());
                 }

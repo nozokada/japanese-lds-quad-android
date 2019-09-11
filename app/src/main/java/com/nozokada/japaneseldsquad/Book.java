@@ -13,10 +13,10 @@ public class Book extends RealmObject {
     private String id;
 
     @Required
-    private String name_jpn;
+    private String name_primary;
 
     @Required
-    private String name_eng;
+    private String name_secondary;
 
     @Required
     private String link;
@@ -38,20 +38,20 @@ public class Book extends RealmObject {
         this.id = id;
     }
 
-    public String getName_jpn() {
-        return name_jpn;
+    public String getName_primary() {
+        return name_primary;
     }
 
-    public void setName_jpn(String name_jpn) {
-        this.name_jpn = name_jpn;
+    public void setName_primary(String name_primary) {
+        this.name_primary = name_primary;
     }
 
-    public String getName_eng() {
-        return name_eng;
+    public String getName_secondary() {
+        return name_secondary;
     }
 
-    public void setName_eng(String name_eng) {
-        this.name_eng = name_eng;
+    public void setName_secondary(String name_secondary) {
+        this.name_secondary = name_secondary;
     }
 
     public String getLink() {

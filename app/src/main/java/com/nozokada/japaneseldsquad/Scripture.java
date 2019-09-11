@@ -16,16 +16,16 @@ public class Scripture extends RealmObject {
     private String verse;
 
     @Required
-    private String scripture_jpn;
+    private String scripture_primary;
 
     @Required
-    private String scripture_jpn_search;
+    private String scripture_primary_raw;
 
     @Required
-    private String scripture_eng;
+    private String scripture_secondary;
 
     @Required
-    private String scripture_eng_search;
+    private String scripture_secondary_raw;
 
     private Book parent_book;
 
@@ -54,36 +54,36 @@ public class Scripture extends RealmObject {
         this.verse = verse;
     }
 
-    public String getScripture_jpn() {
-        return scripture_jpn;
+    public String getScripture_primary() {
+        return scripture_primary;
     }
 
-    public void setScripture_jpn(String scripture_jpn) {
-        this.scripture_jpn = scripture_jpn;
+    public void setScripture_primary(String scripture_primary) {
+        this.scripture_primary = scripture_primary;
     }
 
-    public String getScripture_jpn_search() {
-        return scripture_jpn_search;
+    public String getScripture_primary_raw() {
+        return scripture_primary_raw;
     }
 
-    public void setScripture_jpn_search(String scripture_jpn_search) {
-        this.scripture_jpn_search = scripture_jpn_search;
+    public void setScripture_primary_raw(String scripture_primary_raw) {
+        this.scripture_primary_raw = scripture_primary_raw;
     }
 
-    public String getScripture_eng() {
-        return scripture_eng;
+    public String getScripture_secondary() {
+        return scripture_secondary;
     }
 
-    public void setScripture_eng(String scripture_eng) {
-        this.scripture_eng = scripture_eng;
+    public void setScripture_secondary(String scripture_secondary) {
+        this.scripture_secondary = scripture_secondary;
     }
 
-    public String getScripture_eng_search() {
-        return scripture_eng_search;
+    public String getScripture_secondary_raw() {
+        return scripture_secondary_raw;
     }
 
-    public void setScripture_eng_search(String scripture_eng_search) {
-        this.scripture_eng_search = scripture_eng_search;
+    public void setScripture_secondary_raw(String scripture_secondary_raw) {
+        this.scripture_secondary_raw = scripture_secondary_raw;
     }
 
     public Book getParent_book() {

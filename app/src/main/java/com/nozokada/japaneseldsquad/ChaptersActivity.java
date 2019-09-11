@@ -68,7 +68,7 @@ public class ChaptersActivity extends AppCompatActivity {
         }
 
         targetBook = realm.where(Book.class).equalTo("id", bookId).findFirst();
-        targetBookName = targetBook.getName_jpn();
+        targetBookName = targetBook.getName_primary();
 
         if (targetBook.getLink().startsWith("gs")) gsViewed = true;
         if (targetBook.getLink().startsWith("hymns")) hymnsViewed = true;
@@ -79,7 +79,7 @@ public class ChaptersActivity extends AppCompatActivity {
         chaptersList = targetBook.getChild_scriptures().where().equalTo("verse", "counter").findAll().sort("id");
 
         if (titleChaptersList != null) {
-            if (titleChaptersList.first().getScripture_eng().equals(""))
+            if (titleChaptersList.first().getScripture_secondary().equals(""))
                 secondaryExists = false;
         }
 
@@ -91,16 +91,16 @@ public class ChaptersActivity extends AppCompatActivity {
 
                 dualEnabled = settings.getBoolean("dualEnabled", false);
 
-                String jpText = chaptersList.get(position).getScripture_jpn() + " ";
+                String jpText = chaptersList.get(position).getScripture_primary() + " ";
 
                 if (gsViewed || hymnsViewed)
-                    jpText += " " + titleChaptersList.get(position).getScripture_jpn().replaceAll("<[^>]*>", "");
+                    jpText += " " + titleChaptersList.get(position).getScripture_primary().replaceAll("<[^>]*>", "");
 
                 if (dualEnabled && secondaryExists) {
-                    String enText = chaptersList.get(position).getScripture_eng() + " ";
+                    String enText = chaptersList.get(position).getScripture_secondary() + " ";
 
                     if (gsViewed || hymnsViewed)
-                        enText += " " + titleChaptersList.get(position).getScripture_eng().replaceAll("<[^>]*>", "");
+                        enText += " " + titleChaptersList.get(position).getScripture_secondary().replaceAll("<[^>]*>", "");
 
                     TextView text1 = view.findViewById(android.R.id.text1);
                     text1.setText(jpText);

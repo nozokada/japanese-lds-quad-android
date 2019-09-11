@@ -85,21 +85,21 @@ public class ContentActivity extends AppCompatActivity {
         scripturesList = targetBook.getChild_scriptures().sort("id");
 
         if (scripturesList != null) {
-            if (scripturesList.first().getScripture_eng().equals(""))
+            if (scripturesList.first().getScripture_secondary().equals(""))
                 secondaryExists = false;
         }
 
         if (targetBook.getLink().startsWith("gs"))
             gsViewed = true;
 
-        String counter = scripturesList.where().equalTo("verse", "counter").equalTo("chapter", targetChapter).findFirst().getScripture_jpn();
+        String counter = scripturesList.where().equalTo("verse", "counter").equalTo("chapter", targetChapter).findFirst().getScripture_primary();
         if (counter.equals("")) {
             if (gsViewed) {
                 getSupportActionBar().setTitle(scripturesList.where().equalTo("verse", "title")
-                        .equalTo("chapter", targetChapter).findFirst().getScripture_jpn().replaceAll("<[^>]*>", ""));
+                        .equalTo("chapter", targetChapter).findFirst().getScripture_primary().replaceAll("<[^>]*>", ""));
             }
             else {
-                getSupportActionBar().setTitle(scripturesList.first().getParent_book().getName_jpn());
+                getSupportActionBar().setTitle(scripturesList.first().getParent_book().getName_primary());
             }
         }
         else {
@@ -114,14 +114,14 @@ public class ContentActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                String counter = scripturesList.where().equalTo("verse", "counter").equalTo("chapter", position + 1).findFirst().getScripture_jpn();
+                String counter = scripturesList.where().equalTo("verse", "counter").equalTo("chapter", position + 1).findFirst().getScripture_primary();
                 if (counter.equals("")) {
                     if (gsViewed) {
                         getSupportActionBar().setTitle(scripturesList.where().equalTo("verse", "title")
-                                .equalTo("chapter", position + 1).findFirst().getScripture_jpn().replaceAll("<[^>]*>", ""));
+                                .equalTo("chapter", position + 1).findFirst().getScripture_primary().replaceAll("<[^>]*>", ""));
                     }
                     else {
-                        getSupportActionBar().setTitle(scripturesList.first().getParent_book().getName_jpn());
+                        getSupportActionBar().setTitle(scripturesList.first().getParent_book().getName_primary());
                     }
                 }
                 else {

@@ -248,8 +248,8 @@ public class ContentWebView extends WebView {
                     @Override
                     public void execute(Realm realm) {
                         Bookmark newBookmark = realm.createObject(Bookmark.class, scripture.getId());
-                        newBookmark.setName_jpn(scripture.getParent_book().getName_jpn() + " " + scripture.getChapter() + " : " + scripture.getVerse());
-                        newBookmark.setName_eng(scripture.getParent_book().getName_eng() + " " + scripture.getChapter() + " : " + scripture.getVerse());
+                        newBookmark.setName_primary(scripture.getParent_book().getName_primary() + " " + scripture.getChapter() + " : " + scripture.getVerse());
+                        newBookmark.setName_secondary(scripture.getParent_book().getName_secondary() + " " + scripture.getChapter() + " : " + scripture.getVerse());
                         newBookmark.setScripture(scripture);
                         newBookmark.setDate(new Date());
                     }
@@ -271,7 +271,7 @@ public class ContentWebView extends WebView {
                     Book nextBook = booksFound.last();
                     Intent intent = new Intent(fragmentActivity, ContentActivity.class);
                     intent.putExtra("id", nextBook.getId());
-                    intent.putExtra("name", nextBook.getName_jpn());
+                    intent.putExtra("name", nextBook.getName_primary());
                     intent.putExtra("chapter", 1);
                     intent.putExtra("verse", "");
                     intent.putExtra("count", 1);
@@ -300,7 +300,7 @@ public class ContentWebView extends WebView {
 
                 Intent intent = new Intent(fragmentActivity, ContentActivity.class);
                 intent.putExtra("id", nextBook.getId());
-                intent.putExtra("name", nextBook.getName_jpn());
+                intent.putExtra("name", nextBook.getName_primary());
                 intent.putExtra("chapter", Integer.valueOf(chapter));
                 intent.putExtra("verse", verse);
                 intent.putExtra("count", chaptersCount);
